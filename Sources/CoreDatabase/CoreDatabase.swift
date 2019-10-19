@@ -10,7 +10,7 @@ import CoreData
 
 public class CoreDatabase {
     
-    public static internal var shared: CoreDatabase?
+    public static var shared: CoreDatabase?
     public let coreDataModelName: String
     internal let stack: CoreDataStack
     
