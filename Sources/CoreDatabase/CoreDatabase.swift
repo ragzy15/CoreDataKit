@@ -10,7 +10,7 @@ import CoreData
 
 public class CoreDatabase {
     
-    static internal var shared: CoreDatabase?
+    public static internal var shared: CoreDatabase?
     public let coreDataModelName: String
     internal let stack: CoreDataStack
     
@@ -18,16 +18,16 @@ public class CoreDatabase {
         return stack.viewContext
     }
     
-    static func initializeSharedInstance(modelName: String) {
+    public static func initializeSharedInstance(modelName: String) {
         CoreDatabase.shared = CoreDatabase(modelName: modelName)
     }
     
-    required init(modelName: String) {
+    public required init(modelName: String) {
         coreDataModelName = modelName
         stack = CoreDataStack(name: modelName)
     }
     
-    func addStores(completion: @escaping (Result<[NSPersistentStoreDescription], NSError>) -> ()) {
+    public func addStores(completion: @escaping (Result<[NSPersistentStoreDescription], NSError>) -> ()) {
         stack.loadPersistentStores(completion: completion)
     }
     
