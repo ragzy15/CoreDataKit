@@ -10,7 +10,7 @@ import CoreData
 
 public class CoreDatabase {
     
-    public static var shared: CoreDatabase?
+    public static var shared: CoreDatabase!
     public let coreDataModelName: String
     internal let stack: CoreDataStack
     
@@ -18,16 +18,30 @@ public class CoreDatabase {
         return stack.viewContext
     }
     
-    public static func initializeSharedInstance(modelName: String) {
-        CoreDatabase.shared = CoreDatabase(modelName: modelName)
-    }
-    
-    public required init(modelName: String) {
+    public required init(modelName: String, completion: @escaping (CoreDataStackResultType) -> Void) {
         coreDataModelName = modelName
         stack = CoreDataStack(name: modelName)
+        addStores(completion: completion)
     }
     
-    public func addStores(completion: @escaping (Result<[NSPersistentStoreDescription], NSError>) -> ()) {
+    public static func initializeSharedInstance(modelName: String,
+                                                completion: @escaping (CoreDataStackResultType) -> Void) {
+        var database: CoreDatabase!
+        
+        database = CoreDatabase(modelName: modelName) { (result) in
+            switch result {
+            case .success(let stores):
+                CoreDatabase.shared = database
+                completion(.success(stores))
+                
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    @inline(__always)
+    internal func addStores(completion: @escaping (CoreDataStackResultType) -> ()) {
         stack.loadPersistentStores(completion: completion)
     }
     

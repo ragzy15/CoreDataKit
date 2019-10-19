@@ -8,8 +8,11 @@
 
 import CoreData
 
-// MARK: - Magic
+// MARK: - CORE DATA STACK
+public typealias CoreDataStackResultType = Result<[NSPersistentStoreDescription], NSError>
+
 internal final class CoreDataStack {
+    
     
     var viewContext: NSManagedObjectContext {
         return persistentContainer.viewContext
@@ -21,7 +24,7 @@ internal final class CoreDataStack {
         persistentContainer = NSPersistentContainer(name: name)
     }
     
-    func loadPersistentStores(completion: @escaping (Result<[NSPersistentStoreDescription], NSError>) throws -> Void) {
+    func loadPersistentStores(completion: @escaping (CoreDataStackResultType) -> Void) {
         var storeDescriptions: [NSPersistentStoreDescription] = []
         
         /*
@@ -44,13 +47,13 @@ internal final class CoreDataStack {
                  * The store could not be migrated to the current model version.
                  Check the error message to determine what the actual problem was.
                  */
-                try? completion(.failure(error))
+                completion(.failure(error))
 //                fatalError("Unresolved error \(error), \(error.userInfo)")
             } else {
                 storeDescriptions.append(storeDescription)
                 let index = self.persistentContainer.persistentStoreDescriptions.firstIndex(of: storeDescription)
                 if let index = index, self.persistentContainer.persistentStoreDescriptions.count - 1 == index {
-                    try? completion(.success(storeDescriptions))
+                    completion(.success(storeDescriptions))
                 }
                 self.persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
             }
