@@ -12,15 +12,18 @@ public final class Perform<T: NSManagedObject> {
     public typealias DictionaryResult = [[String : Any]]
     
     private let request: FetchRequest<T>
-    private lazy var context = CoreDataStack.shared.newBackgroundTask()
+    private let context: NSManagedObjectContext
+    private let viewContext: NSManagedObjectContext
     
-    init(builder: () -> FetchRequest<T>) {
+    init(stack: CoreDataStack, builder: () -> FetchRequest<T>) {
         request = builder()
+        context = stack.newBackgroundTask()
+        viewContext = stack.viewContext
     }
     
-    internal init() {
-        request = FetchRequest<T>()
-    }
+//    internal init() {
+//        request = FetchRequest<T>()
+//    }
     
     public func update(_ completion: ([T]) -> Void) throws -> [T] {
         let objects: [T] = try _fetch(context: context)
@@ -47,13 +50,11 @@ public final class Perform<T: NSManagedObject> {
     }
     
     public func fetch() throws -> [T] {
-        let context = CoreDataStack.shared.viewContext
-        return try _fetch(context: context)
+        return try _fetch(context: viewContext)
     }
     
     public func fetchDictionary() throws -> DictionaryResult {
-        let context = CoreDataStack.shared.viewContext
-        return try _fetch(context: context)
+        return try _fetch(context: viewContext)
     }
     
     private func _fetch<T>(context: NSManagedObjectContext) throws -> T {

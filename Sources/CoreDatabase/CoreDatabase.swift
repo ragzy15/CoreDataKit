@@ -8,23 +8,40 @@
 
 import CoreData
 
-public final class CoreDatabase {
+public class CoreDatabase {
     
-    private init() {}
+    static internal var shared: CoreDatabase?
+    public let coreDataModelName: String
+    internal let stack: CoreDataStack
     
-    public static var coreDataModelName: String = ""
+    internal var viewContext: NSManagedObjectContext {
+        return stack.viewContext
+    }
+    
+    static func initializeSharedInstance(modelName: String) {
+        CoreDatabase.shared = CoreDatabase(modelName: modelName)
+    }
+    
+    required init(modelName: String) {
+        coreDataModelName = modelName
+        stack = CoreDataStack(name: modelName)
+    }
+    
+    func addStores(completion: @escaping (Result<[NSPersistentStoreDescription], NSError>) -> ()) {
+        stack.loadPersistentStores(completion: completion)
+    }
     
     @discardableResult
-    public class func perform<T: NSManagedObject>(_ builder: () -> FetchRequest<T>) -> Perform<T> {
-        let perform = Perform<T>(builder: builder)
+    public func perform<T: NSManagedObject>(_ builder: () -> FetchRequest<T>) -> Perform<T> {
+        let perform = Perform<T>(stack: stack, builder: builder)
         return perform
     }
     
-    public class func performInsert<T: NSManagedObject>(_ insertions: (T) -> Void) throws {
-        _ = try Insert<T>(insertions)
+    public func performInsert<T: NSManagedObject>(_ insertions: (T) -> Void) throws {
+        _ = try Insert<T>(stack: stack, insertions)
     }
     
-    public class func performInsert<T: NSManagedObject>(_ insertions: (T, NSManagedObjectContext) -> Void) throws {
-        _ = try Insert<T>(insertions)
+    public func performInsert<T: NSManagedObject>(_ insertions: (T, NSManagedObjectContext) -> Void) throws {
+        _ = try Insert<T>(stack: stack, insertions)
     }
 }

@@ -11,16 +11,19 @@ import CoreData
 internal class Insert<T: NSManagedObject> {
     
     private let entity: T
-    private let context = CoreDataStack.shared.newBackgroundTask()
     
-    internal init(_ insertions: (T) -> Void) throws {
+    internal init(stack: CoreDataStack, _ insertions: (T) -> Void) throws {
+        let context = stack.newBackgroundTask()
         entity = T(context: context)
+        
         insertions(entity)
         try context.save()
     }
 
-    internal init(_ insertions: (T, NSManagedObjectContext) -> Void) throws {
+    internal init(stack: CoreDataStack, _ insertions: (T, NSManagedObjectContext) -> Void) throws {
+        let context = stack.newBackgroundTask()
         entity = T(context: context)
+        
         insertions(entity, context)
         try context.save()
     }
