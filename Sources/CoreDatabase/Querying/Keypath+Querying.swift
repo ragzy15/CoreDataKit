@@ -18,7 +18,7 @@ Creates a `Where` clause by comparing if a attribute is equal to given value.
 - Parameter keyPath: A key path from a specific `NSManagedObject` to a specific resulting value type.
 - Parameter value: Equatable Value with same type of KeyPath.
  **/
-public func == <T: NSManagedObject, Value: QueryableAttributeType & Equatable>(_ keyPath: KeyPath<T, Value>, _ value: Value) -> Where<T> {
+public func == <T: NSManagedObject, Value: Queryable & Equatable>(_ keyPath: KeyPath<T, Value>, _ value: Value) -> Where<T> {
     
     let path = keyPath._kvcKeyPathString!
     return Where<T>(path, isEqualTo: value)
@@ -34,7 +34,7 @@ FetchRequest<User>().where(\.id != 101)
 - Parameter keyPath: A key path from a specific `NSManagedObject` to a specific resulting value type.
 - Parameter value: Equatable Value with same type of KeyPath.
 **/
- public func != <T: NSManagedObject, Value: QueryableAttributeType & Equatable>(_ keyPath: KeyPath<T, Value>, _ value: Value) -> Where<T> {
+ public func != <T: NSManagedObject, Value: Queryable & Equatable>(_ keyPath: KeyPath<T, Value>, _ value: Value) -> Where<T> {
     
     let path = keyPath._kvcKeyPathString!
     return !Where<T>(path, isEqualTo: value)
@@ -50,10 +50,10 @@ FetchRequest<User>().where(\.age < 18)
 - Parameter keyPath: A key path from a specific `NSManagedObject` to a specific resulting value type.
 - Parameter value: Equatable Value with same type of KeyPath.
 **/
- public func < <T: NSManagedObject, Value: QueryableAttributeType & Comparable>(_ keyPath: KeyPath<T, Value>, _ value: Value) -> Where<T> {
+ public func < <T: NSManagedObject, Value: Queryable & Comparable>(_ keyPath: KeyPath<T, Value>, _ value: Value) -> Where<T> {
     
     let path = keyPath._kvcKeyPathString!
-    return Where<T>("%K < %@", path, value.cs_toQueryableNativeType())
+    return Where<T>("%K < %@", path, value.queryableValue)
 }
 
 /**
@@ -66,10 +66,10 @@ FetchRequest<User>().where(\.age <= 18)
 - Parameter keyPath: A key path from a specific `NSManagedObject` to a specific resulting value type.
 - Parameter value: Equatable Value with same type of KeyPath.
 **/
- public func <= <T: NSManagedObject, Value: QueryableAttributeType & Comparable>(_ keyPath: KeyPath<T, Value>, _ value: Value) -> Where<T> {
+ public func <= <T: NSManagedObject, Value: Queryable & Comparable>(_ keyPath: KeyPath<T, Value>, _ value: Value) -> Where<T> {
     
     let path = keyPath._kvcKeyPathString!
-    return Where<T>("%K <= %@", path, value.cs_toQueryableNativeType())
+    return Where<T>("%K <= %@", path, value.queryableValue)
 }
 
 /**
@@ -82,10 +82,10 @@ FetchRequest<User>().where(\.age > 18)
 - Parameter keyPath: A key path from a specific `NSManagedObject` to a specific resulting value type.
 - Parameter value: Equatable Value with same type of KeyPath.
 **/
- public func > <T: NSManagedObject, Value: QueryableAttributeType & Comparable>(_ keyPath: KeyPath<T, Value>, _ value: Value) -> Where<T> {
+ public func > <T: NSManagedObject, Value: Queryable & Comparable>(_ keyPath: KeyPath<T, Value>, _ value: Value) -> Where<T> {
     
     let path = keyPath._kvcKeyPathString!
-    return Where<T>("%K > %@", path, value.cs_toQueryableNativeType())
+    return Where<T>("%K > %@", path, value.queryableValue)
 }
 
 /**
@@ -98,10 +98,10 @@ FetchRequest<User>().where(\.age >= 18)
 - Parameter keyPath: A key path from a specific `NSManagedObject` to a specific resulting value type.
 - Parameter value: Equatable Value with same type of KeyPath.
 **/
- public func >= <T: NSManagedObject, Value: QueryableAttributeType & Comparable>(_ keyPath: KeyPath<T, Value>, _ value: Value) -> Where<T> {
+ public func >= <T: NSManagedObject, Value: Queryable & Comparable>(_ keyPath: KeyPath<T, Value>, _ value: Value) -> Where<T> {
     
     let path = keyPath._kvcKeyPathString!
-    return Where<T>("%K >= %@", path, value.cs_toQueryableNativeType())
+    return Where<T>("%K >= %@", path, value.queryableValue)
 }
 
 // MARK: Optionals
@@ -116,7 +116,7 @@ FetchRequest<User>().where(\.id == 101)
 - Parameter keyPath: A key path from a specific `NSManagedObject` to a specific resulting value type.
 - Parameter value: Equatable Value with same type of KeyPath.
 **/
- public func == <T: NSManagedObject, V: QueryableAttributeType & Equatable>(_ keyPath: KeyPath<T, Optional<V>>, _ value: V?) -> Where<T> {
+ public func == <T: NSManagedObject, V: Queryable & Equatable>(_ keyPath: KeyPath<T, Optional<V>>, _ value: V?) -> Where<T> {
     
     let path = keyPath._kvcKeyPathString!
     return Where<T>(path, isEqualTo: value)
@@ -132,7 +132,7 @@ FetchRequest<User>().where(\.id != 101)
 - Parameter keyPath: A key path from a specific `NSManagedObject` to a specific resulting value type.
 - Parameter value: Equatable Value with same type of KeyPath.
 **/
- public func != <T: NSManagedObject, V: QueryableAttributeType & Equatable>(_ keyPath: KeyPath<T, Optional<V>>, _ value: V?) -> Where<T> {
+ public func != <T: NSManagedObject, V: Queryable & Equatable>(_ keyPath: KeyPath<T, Optional<V>>, _ value: V?) -> Where<T> {
     
     let path = keyPath._kvcKeyPathString!
     return !Where<T>(path, isEqualTo: value)
@@ -148,11 +148,11 @@ FetchRequest<User>().where(\.age < 18)
 - Parameter keyPath: A key path from a specific `NSManagedObject` to a specific resulting value type.
 - Parameter value: Equatable Value with same type of KeyPath.
 **/
- public func < <T: NSManagedObject, V: QueryableAttributeType & Comparable>(_ keyPath: KeyPath<T, Optional<V>>, _ value: V?) -> Where<T> {
+ public func < <T: NSManagedObject, V: Queryable & Comparable>(_ keyPath: KeyPath<T, Optional<V>>, _ value: V?) -> Where<T> {
     
     let path = keyPath._kvcKeyPathString!
     if let value = value {
-        return Where<T>("%K < %@", path, value.cs_toQueryableNativeType())
+        return Where<T>("%K < %@", path, value.queryableValue)
     } else {
         return Where<T>("%K < nil", path)
     }
@@ -168,11 +168,11 @@ FetchRequest<User>().where(\.age <= 18)
 - Parameter keyPath: A key path from a specific `NSManagedObject` to a specific resulting value type.
 - Parameter value: Equatable Value with same type of KeyPath.
 **/
- public func <= <T: NSManagedObject, V: QueryableAttributeType & Comparable>(_ keyPath: KeyPath<T, Optional<V>>, _ value: V?) -> Where<T> {
+ public func <= <T: NSManagedObject, V: Queryable & Comparable>(_ keyPath: KeyPath<T, Optional<V>>, _ value: V?) -> Where<T> {
     
     let path = keyPath._kvcKeyPathString!
     if let value = value {
-        return Where<T>("%K <= %@", path, value.cs_toQueryableNativeType())
+        return Where<T>("%K <= %@", path, value.queryableValue)
     } else {
         return Where<T>("%K <= nil", path)
     }
@@ -188,11 +188,11 @@ FetchRequest<User>().where(\.age > 18)
 - Parameter keyPath: A key path from a specific `NSManagedObject` to a specific resulting value type.
 - Parameter value: Equatable Value with same type of KeyPath.
 **/
- public func > <T: NSManagedObject, V: QueryableAttributeType & Comparable>(_ keyPath: KeyPath<T, Optional<V>>, _ value: V?) -> Where<T> {
+ public func > <T: NSManagedObject, V: Queryable & Comparable>(_ keyPath: KeyPath<T, Optional<V>>, _ value: V?) -> Where<T> {
     
     let path = keyPath._kvcKeyPathString!
     if let value = value {
-        return Where<T>("%K > %@", path, value.cs_toQueryableNativeType())
+        return Where<T>("%K > %@", path, value.queryableValue)
     } else {
         return Where<T>("%K > nil", path)
     }
@@ -208,11 +208,11 @@ FetchRequest<User>().where(\.age >= 18)
 - Parameter keyPath: A key path from a specific `NSManagedObject` to a specific resulting value type.
 - Parameter value: Equatable Value with same type of KeyPath.
 **/
- public func >= <T: NSManagedObject, V: QueryableAttributeType & Comparable>(_ keyPath: KeyPath<T, Optional<V>>, _ value: V?) -> Where<T> {
+ public func >= <T: NSManagedObject, V: Queryable & Comparable>(_ keyPath: KeyPath<T, Optional<V>>, _ value: V?) -> Where<T> {
     
     let path = keyPath._kvcKeyPathString!
     if let value = value {
-        return Where<T>("%K >= %@", path, value.cs_toQueryableNativeType())
+        return Where<T>("%K >= %@", path, value.queryableValue)
     } else {
         return Where<T>("%K >= nil", path)
     }

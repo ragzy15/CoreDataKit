@@ -9,7 +9,7 @@
 import Foundation
 
 @propertyWrapper
-public struct KeychainStorage<Value: QueryableAttributeType> {
+public struct KeychainStorage<Value: Queryable> {
     
     private let key: StorageKeys
     private var value: Value
@@ -30,7 +30,7 @@ public struct KeychainStorage<Value: QueryableAttributeType> {
             return unarchiveObject as? Value ?? value
         }
         set {
-            guard let data = newValue.cs_toData() else {
+            guard let data = newValue.data else {
                 print("Cannot save value for key: \(key.value) due to `data` value being nil")
                 return
             }

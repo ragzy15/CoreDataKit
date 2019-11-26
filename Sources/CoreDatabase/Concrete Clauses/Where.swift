@@ -34,14 +34,14 @@ public struct Where<T: NSManagedObject> {
      - parameter keyPath: the keyPath to compare with
      - parameter value: the arguments for the `==` operator
      */
-    public init<U: QueryableAttributeType>(_ keyPath: String, isEqualTo value: U?) {
+    public init<U: Queryable>(_ keyPath: String, isEqualTo value: U?) {
         switch value {
             
         case nil, is NSNull:
             self.init(NSPredicate(format: "\(keyPath) == nil"))
             
         case let value?:
-            self.init(NSPredicate(format: "\(keyPath) == %@", argumentArray: [value.cs_toQueryableNativeType()]))
+            self.init(NSPredicate(format: "\(keyPath) == %@", argumentArray: [value.queryableValue]))
         }
     }
     
