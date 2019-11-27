@@ -60,20 +60,20 @@ import CoreGraphics.CGGeometry
  */
 public protocol Queryable: Hashable {
     
-    /// The CoreData `NativeType` for this type when used in `Fetch` clauses.
-    associatedtype QueryableNativeType
+    /// The **CoreData Type** for this type when used in `Fetch` clauses.
+    associatedtype QueryableType
     
     /// The `NSAttributeType` for this type when used in `Fetch` clauses.
     static var attributeType: NSAttributeType { get }
     
-    /// Creates an instance of this type from its `QueryableNativeType` value.
+    /// Creates an instance of this type from its `QueryableType` value.
     @inline(__always)
-    static func nativeValue(from value: QueryableNativeType) -> Self?
+    static func nativeValue(from value: QueryableType) -> Self?
     
     
     /// Creates `QueryableNativeType` value from this instance.
     @inline(__always)
-    var queryableValue: QueryableNativeType { get }
+    var queryableValue: QueryableType { get }
     
     @inline(__always)
     var data: Data? { get }
@@ -83,12 +83,12 @@ public protocol Queryable: Hashable {
 
 extension Bool: Queryable {
     
-    public typealias QueryableNativeType = NSNumber
+    public typealias QueryableType = NSNumber
     
     public static let attributeType: NSAttributeType = .booleanAttributeType
     
     @inline(__always)
-    public static func nativeValue(from value: QueryableNativeType) -> Bool? {
+    public static func nativeValue(from value: QueryableType) -> Bool? {
         
         switch value {
             
@@ -103,8 +103,8 @@ extension Bool: Queryable {
     }
     
     @inline(__always)
-    public var queryableValue: QueryableNativeType {
-        self as QueryableNativeType
+    public var queryableValue: QueryableType {
+        self as QueryableType
     }
     
     @inline(__always)
@@ -118,18 +118,18 @@ extension Bool: Queryable {
 
 extension CGFloat: Queryable {
     
-    public typealias QueryableNativeType = NSNumber
+    public typealias QueryableType = NSNumber
     
     public static let attributeType: NSAttributeType = .doubleAttributeType
     
     @inline(__always)
-    public static func nativeValue(from value: QueryableNativeType) -> CGFloat? {
+    public static func nativeValue(from value: QueryableType) -> CGFloat? {
         CGFloat(value.doubleValue)
     }
     
     @inline(__always)
-    public var queryableValue: QueryableNativeType {
-        self as QueryableNativeType
+    public var queryableValue: QueryableType {
+        self as QueryableType
     }
     
     @inline(__always)
@@ -143,18 +143,18 @@ extension CGFloat: Queryable {
 
 extension Data: Queryable {
     
-    public typealias QueryableNativeType = NSData
+    public typealias QueryableType = NSData
     
     public static let attributeType: NSAttributeType = .binaryDataAttributeType
     
     @inline(__always)
-    public static func nativeValue(from value: QueryableNativeType) -> Data? {
+    public static func nativeValue(from value: QueryableType) -> Data? {
         value as Data
     }
     
     @inline(__always)
-    public var queryableValue: QueryableNativeType {
-        self as QueryableNativeType
+    public var queryableValue: QueryableType {
+        self as QueryableType
     }
     
     @inline(__always)
@@ -168,17 +168,17 @@ extension Data: Queryable {
 
 extension Date: Queryable {
     
-    public typealias QueryableNativeType = NSDate
+    public typealias QueryableType = NSDate
     
     public static let attributeType: NSAttributeType = .dateAttributeType
     
     @inline(__always)
-    public static func nativeValue(from value: QueryableNativeType) -> Date? {
+    public static func nativeValue(from value: QueryableType) -> Date? {
         value as Date
     }
     
     @inline(__always)
-    public var queryableValue: QueryableNativeType {
+    public var queryableValue: QueryableType {
         self as NSDate
     }
     
@@ -193,17 +193,17 @@ extension Date: Queryable {
 
 extension Double: Queryable {
     
-    public typealias QueryableNativeType = NSNumber
+    public typealias QueryableType = NSNumber
     
     public static let attributeType: NSAttributeType = .doubleAttributeType
     
     @inline(__always)
-    public static func nativeValue(from value: QueryableNativeType) -> Double? {
+    public static func nativeValue(from value: QueryableType) -> Double? {
         value.doubleValue
     }
     
     @inline(__always)
-    public var queryableValue: QueryableNativeType {
+    public var queryableValue: QueryableType {
         self as NSNumber
     }
     
@@ -218,17 +218,17 @@ extension Double: Queryable {
 
 extension Float: Queryable {
     
-    public typealias QueryableNativeType = NSNumber
+    public typealias QueryableType = NSNumber
     
     public static let attributeType: NSAttributeType = .floatAttributeType
     
     @inline(__always)
-    public static func nativeValue(from value: QueryableNativeType) -> Float? {
+    public static func nativeValue(from value: QueryableType) -> Float? {
         value.floatValue
     }
     
     @inline(__always)
-    public var queryableValue: QueryableNativeType {
+    public var queryableValue: QueryableType {
         self as NSNumber
     }
     
@@ -243,17 +243,17 @@ extension Float: Queryable {
 
 extension Int: Queryable {
     
-    public typealias QueryableNativeType = NSNumber
+    public typealias QueryableType = NSNumber
     
     public static let attributeType: NSAttributeType = .integer64AttributeType
     
     @inline(__always)
-    public static func nativeValue(from value: QueryableNativeType) -> Int? {
+    public static func nativeValue(from value: QueryableType) -> Int? {
         value.intValue
     }
     
     @inline(__always)
-    public var queryableValue: QueryableNativeType {
+    public var queryableValue: QueryableType {
         self as NSNumber
     }
     
@@ -268,17 +268,17 @@ extension Int: Queryable {
 
 extension Int8: Queryable {
     
-    public typealias QueryableNativeType = NSNumber
+    public typealias QueryableType = NSNumber
     
     public static let attributeType: NSAttributeType = .integer16AttributeType
     
     @inline(__always)
-    public static func nativeValue(from value: QueryableNativeType) -> Int8? {
+    public static func nativeValue(from value: QueryableType) -> Int8? {
         value.int8Value
     }
     
     @inline(__always)
-    public var queryableValue: QueryableNativeType {
+    public var queryableValue: QueryableType {
         self as NSNumber
     }
     
@@ -293,17 +293,17 @@ extension Int8: Queryable {
 
 extension Int16: Queryable {
     
-    public typealias QueryableNativeType = NSNumber
+    public typealias QueryableType = NSNumber
     
     public static let attributeType: NSAttributeType = .integer16AttributeType
     
     @inline(__always)
-    public static func nativeValue(from value: QueryableNativeType) -> Int16? {
+    public static func nativeValue(from value: QueryableType) -> Int16? {
         value.int16Value
     }
     
     @inline(__always)
-    public var queryableValue: QueryableNativeType {
+    public var queryableValue: QueryableType {
         self as NSNumber
     }
     
@@ -318,17 +318,17 @@ extension Int16: Queryable {
 
 extension Int32: Queryable {
     
-    public typealias QueryableNativeType = NSNumber
+    public typealias QueryableType = NSNumber
     
     public static let attributeType: NSAttributeType = .integer32AttributeType
     
     @inline(__always)
-    public static func nativeValue(from value: QueryableNativeType) -> Int32? {
+    public static func nativeValue(from value: QueryableType) -> Int32? {
         value.int32Value
     }
     
     @inline(__always)
-    public var queryableValue: QueryableNativeType {
+    public var queryableValue: QueryableType {
         self as NSNumber
     }
     
@@ -343,17 +343,17 @@ extension Int32: Queryable {
 
 extension Int64: Queryable {
     
-    public typealias QueryableNativeType = NSNumber
+    public typealias QueryableType = NSNumber
     
     public static let attributeType: NSAttributeType = .integer64AttributeType
     
     @inline(__always)
-    public static func nativeValue(from value: QueryableNativeType) -> Int64? {
+    public static func nativeValue(from value: QueryableType) -> Int64? {
         value.int64Value
     }
     
     @inline(__always)
-    public var queryableValue: QueryableNativeType {
+    public var queryableValue: QueryableType {
         self as NSNumber
     }
     
@@ -368,7 +368,7 @@ extension Int64: Queryable {
 
 extension NSData: Queryable {
     
-    public typealias QueryableNativeType = NSData
+    public typealias QueryableType = NSData
     
     @nonobjc
     public class var attributeType: NSAttributeType {
@@ -376,7 +376,7 @@ extension NSData: Queryable {
     }
     
     @nonobjc @inline(__always)
-    public class func nativeValue(from value: QueryableNativeType) -> Self? {
+    public class func nativeValue(from value: QueryableType) -> Self? {
         
         func forceCast<T: NSData>(_ value: Any) -> T? {
              value as? T
@@ -386,7 +386,7 @@ extension NSData: Queryable {
     }
     
     @nonobjc @inline(__always)
-    public var queryableValue: QueryableNativeType {
+    public var queryableValue: QueryableType {
         self
     }
     
@@ -401,7 +401,7 @@ extension NSData: Queryable {
 
 extension NSDate: Queryable {
     
-    public typealias QueryableNativeType = NSDate
+    public typealias QueryableType = NSDate
     
     @nonobjc
     public class var attributeType: NSAttributeType {
@@ -409,7 +409,7 @@ extension NSDate: Queryable {
     }
     
     @nonobjc @inline(__always)
-    public class func nativeValue(from value: QueryableNativeType) -> Self? {
+    public class func nativeValue(from value: QueryableType) -> Self? {
         
         func forceCast<T: NSDate>(_ value: Any) -> T? {
              value as? T
@@ -419,7 +419,7 @@ extension NSDate: Queryable {
     }
     
     @nonobjc @inline(__always)
-    public var queryableValue: QueryableNativeType {
+    public var queryableValue: QueryableType {
         self
     }
     
@@ -444,7 +444,7 @@ extension NSDecimalNumber /*: Queryable */ {
 
 extension NSManagedObjectID: Queryable {
     
-    public typealias QueryableNativeType = NSManagedObjectID
+    public typealias QueryableType = NSManagedObjectID
     
     @nonobjc
     public class var attributeType: NSAttributeType {
@@ -452,7 +452,7 @@ extension NSManagedObjectID: Queryable {
     }
     
     @nonobjc @inline(__always)
-    public class func nativeValue(from value: QueryableNativeType) -> Self? {
+    public class func nativeValue(from value: QueryableType) -> Self? {
         
         func forceCast<T: NSManagedObjectID>(_ value: Any) -> T? {
              value as? T
@@ -462,7 +462,7 @@ extension NSManagedObjectID: Queryable {
     }
     
     @nonobjc @inline(__always)
-    public var queryableValue: QueryableNativeType {
+    public var queryableValue: QueryableType {
         self
     }
     
@@ -477,7 +477,7 @@ extension NSManagedObjectID: Queryable {
 
 extension NSNull: Queryable {
     
-    public typealias QueryableNativeType = NSNull
+    public typealias QueryableType = NSNull
     
     @nonobjc
     public class var attributeType: NSAttributeType {
@@ -485,7 +485,7 @@ extension NSNull: Queryable {
     }
     
     @nonobjc @inline(__always)
-    public class func nativeValue(from value: QueryableNativeType) -> Self? {
+    public class func nativeValue(from value: QueryableType) -> Self? {
         
         func forceCast<T: NSNull>(_ value: Any) -> T? {
              value as? T
@@ -495,7 +495,7 @@ extension NSNull: Queryable {
     }
     
     @nonobjc @inline(__always)
-    public var queryableValue: QueryableNativeType {
+    public var queryableValue: QueryableType {
         self
     }
     
@@ -510,7 +510,7 @@ extension NSNull: Queryable {
 
 extension NSNumber: Queryable {
     
-    public typealias QueryableNativeType = NSNumber
+    public typealias QueryableType = NSNumber
     
     @objc
     public class var attributeType: NSAttributeType {
@@ -518,7 +518,7 @@ extension NSNumber: Queryable {
     }
     
     @nonobjc @inline(__always)
-    public class func nativeValue(from value: QueryableNativeType) -> Self? {
+    public class func nativeValue(from value: QueryableType) -> Self? {
         
         func forceCast<T: NSNumber>(_ value: Any) -> T? {
              value as? T
@@ -528,7 +528,7 @@ extension NSNumber: Queryable {
     }
     
     @nonobjc @inline(__always)
-    public var queryableValue: QueryableNativeType {
+    public var queryableValue: QueryableType {
         self
     }
     
@@ -543,7 +543,7 @@ extension NSNumber: Queryable {
 
 extension NSString: Queryable {
     
-    public typealias QueryableNativeType = NSString
+    public typealias QueryableType = NSString
     
     @nonobjc
     public class var attributeType: NSAttributeType {
@@ -551,7 +551,7 @@ extension NSString: Queryable {
     }
     
     @nonobjc @inline(__always)
-    public class func nativeValue(from value: QueryableNativeType) -> Self? {
+    public class func nativeValue(from value: QueryableType) -> Self? {
         
         func forceCast<T: NSString>(_ value: Any) -> T? {
             value as? T
@@ -561,7 +561,7 @@ extension NSString: Queryable {
     }
     
     @nonobjc @inline(__always)
-    public var queryableValue: QueryableNativeType {
+    public var queryableValue: QueryableType {
         self
     }
     
@@ -576,7 +576,7 @@ extension NSString: Queryable {
 
 extension NSURL: Queryable {
     
-    public typealias QueryableNativeType = NSString
+    public typealias QueryableType = NSString
     
     @nonobjc
     public class var attributeType: NSAttributeType {
@@ -584,13 +584,13 @@ extension NSURL: Queryable {
     }
     
     @nonobjc @inline(__always)
-    public class func nativeValue(from value: QueryableNativeType) -> Self? {
+    public class func nativeValue(from value: QueryableType) -> Self? {
         self.init(string: value as String)
     }
     
     @nonobjc @inline(__always)
-    public var queryableValue: QueryableNativeType {
-        (self as URL).absoluteString as QueryableNativeType
+    public var queryableValue: QueryableType {
+        (self as URL).absoluteString as QueryableType
     }
     
     @inline(__always)
@@ -604,7 +604,7 @@ extension NSURL: Queryable {
 
 extension NSUUID: Queryable {
     
-    public typealias QueryableNativeType = NSString
+    public typealias QueryableType = NSString
     
     @nonobjc
     public class var attributeType: NSAttributeType {
@@ -612,13 +612,13 @@ extension NSUUID: Queryable {
     }
     
     @nonobjc @inline(__always)
-    public class func nativeValue(from value: QueryableNativeType) -> Self? {
+    public class func nativeValue(from value: QueryableType) -> Self? {
         self.init(uuidString: value.lowercased)
     }
     
     @nonobjc @inline(__always)
-    public var queryableValue: QueryableNativeType {
-        uuidString.lowercased() as QueryableNativeType
+    public var queryableValue: QueryableType {
+        uuidString.lowercased() as QueryableType
     }
     
     @inline(__always)
@@ -632,18 +632,18 @@ extension NSUUID: Queryable {
 
 extension String: Queryable {
     
-    public typealias QueryableNativeType = NSString
+    public typealias QueryableType = NSString
     
     public static let attributeType: NSAttributeType = .stringAttributeType
     
     @inline(__always)
-    public static func nativeValue(from value: QueryableNativeType) -> String? {
+    public static func nativeValue(from value: QueryableType) -> Self? {
         value as String
     }
     
     @inline(__always)
-    public var queryableValue: QueryableNativeType {
-        self as QueryableNativeType
+    public var queryableValue: QueryableType {
+        self as QueryableType
     }
     
     @inline(__always)
@@ -657,18 +657,18 @@ extension String: Queryable {
 
 extension URL: Queryable {
     
-    public typealias QueryableNativeType = NSString
+    public typealias QueryableType = NSString
     
     public static let attributeType: NSAttributeType = .stringAttributeType
     
     @inline(__always)
-    public static func nativeValue(from value: QueryableNativeType) -> URL? {
+    public static func nativeValue(from value: QueryableType) -> Self? {
         self.init(string: value as String)
     }
     
     @inline(__always)
-    public var queryableValue: QueryableNativeType {
-        absoluteString as QueryableNativeType
+    public var queryableValue: QueryableType {
+        absoluteString as QueryableType
     }
     
     @inline(__always)
@@ -682,18 +682,18 @@ extension URL: Queryable {
 
 extension UUID: Queryable {
     
-    public typealias QueryableNativeType = NSString
+    public typealias QueryableType = NSString
     
     public static let attributeType: NSAttributeType = .stringAttributeType
     
     @inline(__always)
-    public static func nativeValue(from value: QueryableNativeType) -> UUID? {
+    public static func nativeValue(from value: QueryableType) -> Self? {
         self.init(uuidString: value.lowercased)
     }
     
     @inline(__always)
-    public var queryableValue: QueryableNativeType {
-        uuidString.lowercased() as QueryableNativeType
+    public var queryableValue: QueryableType {
+        uuidString.lowercased() as QueryableType
     }
     
     @inline(__always)
@@ -707,19 +707,19 @@ extension UUID: Queryable {
 
 extension RawRepresentable where RawValue: Queryable {
     
-    public typealias QueryableNativeType = RawValue.QueryableNativeType
+    public typealias QueryableType = RawValue.QueryableType
     
     public static var attributeType: NSAttributeType {
         RawValue.attributeType
     }
     
     @inline(__always)
-    public static func cs_fromQueryableNativeType(_ value: QueryableNativeType) -> Self? {
+    public static func nativeValue(from value: QueryableType) -> Self? {
         RawValue.nativeValue(from: value).flatMap { self.init(rawValue: $0) }
     }
     
     @inline(__always)
-    public func cs_toQueryableNativeType() -> QueryableNativeType {
+    public var queryableValue: QueryableType {
         rawValue.queryableValue
     }
     
