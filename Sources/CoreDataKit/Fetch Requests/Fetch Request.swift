@@ -77,70 +77,70 @@ extension CKFetchRequest where Result: CKObject {
         self.fetchRequest = fetchRequest(fetch).format(to: Result.self)
     }
 }
-
-extension CKFetchRequest {
-    
-    class Inner<Downstream: NKSubscriber, Result: CKFetchResult>: NKSubscriber, NKSubscription where Downstream.Input == CKFetchedResults<Result>, Downstream.Failure == NSError {
-        
-        typealias Input = CKFetchedResults<Result>
-        
-        typealias Failure = NSError
-        
-        let downstream: Downstream
-        
-        init(downstream: Downstream) {
-            self.downstream = downstream
-        }
-        
-        func request(_ demand: NKSubscribers.Demand) {
-            
-        }
-        
-        func receive(subscription: NKSubscription) {
-            
-        }
-        
-        func receive(_ input: CKFetchedResults<Result>) -> NKSubscribers.Demand {
-            _ = downstream.receive(input)
-            return .unlimited
-        }
-        
-        func receive(completion: NKSubscribers.Completion<NSError>) {
-            downstream.receive(completion: completion)
-        }
-        
-        func cancel() {
-            
-        }
-    }
-    
-    public var publisher: Publisher<Result> {
-        Publisher(fetchRequest: fetchRequest)
-    }
-    
-    public struct Publisher<Result: CKFetchResult>: NKPublisher {
-        
-        public typealias Output = CKFetchedResults<Result>
-        
-        public typealias Failure = NSError
-        
-        let fetchRequest: FetchRequest<Result>
-        
-        public func receive<S: NKSubscriber>(subscriber: S) where Output == S.Input, Failure == S.Failure {
-            let subscription = Inner(downstream: subscriber)
-            subscriber.receive(subscription: subscription)
-            
-            do {
-                let objects = try CoreDataKit.default.unsafeContext.fetch(fetchRequest)
-                
-                _  = subscription.receive(.init(results: objects))
-                subscription.receive(completion: .finished)
-            } catch {
-                subscription.receive(completion: .failure(error as NSError))
-            }
-        }
-    }
-}
+//
+//extension CKFetchRequest {
+//    
+//    class Inner<Downstream: NKSubscriber, Result: CKFetchResult>: NKSubscriber, NKSubscription where Downstream.Input == CKFetchedResults<Result>, Downstream.Failure == NSError {
+//        
+//        typealias Input = CKFetchedResults<Result>
+//        
+//        typealias Failure = NSError
+//        
+//        let downstream: Downstream
+//        
+//        init(downstream: Downstream) {
+//            self.downstream = downstream
+//        }
+//        
+//        func request(_ demand: NKSubscribers.Demand) {
+//            
+//        }
+//        
+//        func receive(subscription: NKSubscription) {
+//            
+//        }
+//        
+//        func receive(_ input: CKFetchedResults<Result>) -> NKSubscribers.Demand {
+//            _ = downstream.receive(input)
+//            return .unlimited
+//        }
+//        
+//        func receive(completion: NKSubscribers.Completion<NSError>) {
+//            downstream.receive(completion: completion)
+//        }
+//        
+//        func cancel() {
+//            
+//        }
+//    }
+//    
+//    public var publisher: Publisher<Result> {
+//        Publisher(fetchRequest: fetchRequest)
+//    }
+//    
+//    public struct Publisher<Result: CKFetchResult>: NKPublisher {
+//        
+//        public typealias Output = CKFetchedResults<Result>
+//        
+//        public typealias Failure = NSError
+//        
+//        let fetchRequest: FetchRequest<Result>
+//        
+//        public func receive<S: NKSubscriber>(subscriber: S) where Output == S.Input, Failure == S.Failure {
+//            let subscription = Inner(downstream: subscriber)
+//            subscriber.receive(subscription: subscription)
+//            
+//            do {
+//                let objects = try CoreDataKit.default.unsafeContext.fetch(fetchRequest)
+//                
+//                _  = subscription.receive(.init(results: objects))
+//                subscription.receive(completion: .finished)
+//            } catch {
+//                subscription.receive(completion: .failure(error as NSError))
+//            }
+//        }
+//    }
+//}
 
 
 public struct CKFetchedResults<Result: CKFetchResult>: RandomAccessCollection {
