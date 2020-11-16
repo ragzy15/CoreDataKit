@@ -8,7 +8,7 @@
 
 import Foundation
 
-final class CKLogger {
+public final class CKLogger {
     
     var isEnabled: Bool
     

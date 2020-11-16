@@ -34,7 +34,7 @@ public typealias AsynchronousFetchRequest<Result: CKFetchResult> = NSAsynchronou
 public typealias AsynchronousFetchResult<Result: CKFetchResult> = NSAsynchronousFetchResult<Result>
 
 
-public typealias FetchRequest<Result: CKFetchResult> = NSFetchRequest<Result>
+public typealias NSFetchRequest<Result: CKFetchResult> = CoreData.NSFetchRequest<Result>
 
 public typealias CKFetchRequestResultType = NSFetchRequestResultType
 
@@ -91,3 +91,7 @@ public typealias CKMergePolicy = NSMergePolicy
 public typealias CKSortDescriptor = NSSortDescriptor
 
 public typealias CKEntityDescription = NSEntityDescription
+
+
+@available(iOS 11.0, *)
+public typealias CKCoreDataCoreSpotlightDelegate = NSCoreDataCoreSpotlightDelegate

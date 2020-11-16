@@ -29,7 +29,7 @@ let package = Package(
         .target(name: "FRC"),
         .target(
             name: "CoreDataKit",
-            dependencies: ["PublisherKit"]),
+            dependencies: ["PublisherKit", "FRC"]),
         .testTarget(
             name: "CoreDataKitTests",
             dependencies: ["CoreDataKit"]),

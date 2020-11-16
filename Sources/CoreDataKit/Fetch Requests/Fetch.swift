@@ -10,7 +10,7 @@ import Foundation
 
 public final class CKFetch<Object: CKObject> {
     
-    let fetchRequest: FetchRequest<CKFetchResult>
+    public let fetchRequest: NSFetchRequest<CKFetchResult>
     
     /// Creates a default `NSFetchRequest` for the given `CKObject`.`
     public init() {
@@ -56,7 +56,7 @@ extension CKFetch {
     
     /// Customise `NSFetchRequest`.
     /// - Parameter requestBlock: The block to customize the `NSFetchRequest`.
-    public func customise(_ requestBlock: (FetchRequest<CKFetchResult>) -> Void) -> Self {
+    public func customise(_ requestBlock: (NSFetchRequest<CKFetchResult>) -> Void) -> Self {
         requestBlock(fetchRequest)
         return self
     }
@@ -331,7 +331,7 @@ extension CKFetch {
 
 extension CKFetch {
     
-    func format<Result: CKFetchResult>(to format: Result.Type) -> FetchRequest<Result> {
+    public func format<Result: CKFetchResult>(to format: Result.Type) -> NSFetchRequest<Result> {
         
         switch format {
         case is NSNumber.Type:
@@ -350,6 +350,6 @@ extension CKFetch {
             break
         }
         
-        return fetchRequest as! FetchRequest<Result>
+        return fetchRequest as! NSFetchRequest<Result>
     }
 }

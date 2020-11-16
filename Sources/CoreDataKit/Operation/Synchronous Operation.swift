@@ -10,7 +10,7 @@ import Foundation
 
 public class CKSynchronousOperation: CKBaseOperation {
 
-    func save() -> Result<Bool, NSError> {
+    public func save() -> Result<Bool, NSError> {
         isCommitted = true
         
         let result = context.saveContextSync()

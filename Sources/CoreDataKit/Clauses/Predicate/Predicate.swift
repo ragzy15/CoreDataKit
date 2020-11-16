@@ -10,7 +10,7 @@ import Foundation
 
 public struct CKPredicate<T: CKObject> {
     
-    let predicate: NSPredicate
+    public let predicate: NSPredicate
     
     /// <#Description#>
     /// - Parameter predicate: <#predicate description#>

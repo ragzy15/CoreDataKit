@@ -16,6 +16,12 @@ open class UserDefaults: Foundation.UserDefaults {
         .default
     }
     
+    private static let defaultAppGroup = UserDefaults(suiteName: "CK-App")!
+    
+    open class var standardAppGroup: UserDefaults {
+        .defaultAppGroup
+    }
+    
     open func set<Key: StorageKeys>(_ value: Any?, for key: Key) {
         UserDefaults.standard.set(value, forKey: key.key)
     }

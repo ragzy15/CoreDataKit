@@ -11,3 +11,4 @@
 #import "CKObjectIdResultsController.h"
 #import "CKDictionaryResultsController.h"
 #import "CKCountResultsController.h"
+#import "CKRichFetchRequest.h"

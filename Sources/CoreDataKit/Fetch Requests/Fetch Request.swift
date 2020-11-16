@@ -18,7 +18,7 @@ public struct CKFetchRequest<Result: CKFetchResult> {
     
     var results = CKFetchedResults<Result>(results: [])
     
-    private let fetchRequest: FetchRequest<Result>
+    private let fetchRequest: NSFetchRequest<Result>
     
     /// Creates an instance by defining a fetch request based on the parameters.
     /// - Parameters:
@@ -29,7 +29,7 @@ public struct CKFetchRequest<Result: CKFetchResult> {
     ///   - animation: The animation used for any changes to the fetched
     ///     results.
     public init(entity: CKEntityDescription, sortDescriptors: [CKSortDescriptor], predicate: NSPredicate? = nil) {
-        fetchRequest = FetchRequest<Result>(entityName: entity.managedObjectClassName)
+        fetchRequest = NSFetchRequest<Result>(entityName: entity.managedObjectClassName)
         fetchRequest.sortDescriptors = sortDescriptors
         fetchRequest.predicate = predicate
     }
@@ -46,7 +46,7 @@ public struct CKFetchRequest<Result: CKFetchResult> {
     /// Creates an instance from a fetch request.
     /// - Parameters:
     ///   - fetchRequest: The request used to produce the fetched results.
-    public init(fetchRequest: FetchRequest<Result>) {
+    public init(fetchRequest: NSFetchRequest<Result>) {
         self.fetchRequest = fetchRequest
     }
     
@@ -67,7 +67,7 @@ extension CKFetchRequest where Result: CKObject {
     ///   - animation: The animation used for any changes to the fetched
     ///     results.
     public init(sortDescriptors: [CKSortDescriptor], predicate: NSPredicate? = nil) {
-        fetchRequest = FetchRequest<Result>(entityName: Result.entity().managedObjectClassName)
+        fetchRequest = NSFetchRequest<Result>(entityName: Result.entity().managedObjectClassName)
         fetchRequest.sortDescriptors = sortDescriptors
         fetchRequest.predicate = predicate
     }

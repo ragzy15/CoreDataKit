@@ -29,9 +29,9 @@ public class CoreDataKit {
         }
     }
     
-    private let queue: DispatchQueue
+    public let queue: DispatchQueue
     
-    let logger: CKLogger
+    public let logger: CKLogger
     
     init(stack: CKStack, queue: DispatchQueue) {
         self.stack = stack
@@ -45,11 +45,37 @@ public class CoreDataKit {
         stack = CKCoreDataStack(modelName: name)
         queue = DispatchQueue(label: "com.CoreDataKit.\(name)-context-thread", qos: .default, attributes: .concurrent, autoreleaseFrequency: .inherit, target: nil)
         logger = CKLogger(isEnabled: true)
+//        stack.loadPersistentStores(block: nil)
     }
     
     public convenience init() {
         let databaseName = Bundle.main.infoDictionary?[kCFBundleNameKey as String] as? String ?? "Database"
         self.init(model: databaseName)
+    }
+    
+    func getStack() -> CKStack {
+        stack
+    }
+    
+    public func newBackgroundContext() -> CKContext {
+        stack.newBackgroundTask()
+    }
+    
+    public func newMainThreadChildTask() -> CKContext {
+        stack.newMainThreadChildTask()
+    }
+    
+    public func newBackgroundThreadChildTask() -> CKContext {
+        stack.newBackgroundThreadChildTask()
+    }
+}
+
+// MARK: CORE SPOTLIGHT
+extension CoreDataKit: CKCoreSpotlight {
+    
+    @available(iOS 11.0, *)
+    public func setCoreDataCoreSpotlightExporter(for exporter: ([CKStoreDescription], CKObjectModel) -> Void) {
+        stack.setCoreDataCoreSpotlightExporter(for: exporter)
     }
 }
 
@@ -72,14 +98,33 @@ extension CoreDataKit: CKStoreDescriptionMethods {
         stack.replaceStoreDescriptions(with: descriptions)
     }
     
-    public func loadPersistentStores(block: ((CKStoreDescription, NSError) -> Void)? = nil) {
+    public func loadPersistentStores(block: ((Result<CKStoreDescription, NSError>) -> Void)? = nil) {
         stack.loadPersistentStores(block: block)
     }
 }
 
 // MARK: DATABASE OPERATIONS
 public extension CoreDataKit {
-    
+
+    func performOnMain<T>(synchronous workItem: (CKSynchronousOperation) throws -> T) throws -> T {
+        let operation = CKSynchronousOperation(context: stack.viewContext, queue: .main, logger: logger)
+        
+        let output: T
+
+        do {
+            output = try workItem(operation)
+        }
+        catch let error as NSError {
+            throw error
+        }
+        if let error = operation.save().getError() {
+            throw error as NSError
+        }
+        else {
+            return output
+        }
+    }
+
     func perform<T>(synchronous workItem: (CKSynchronousOperation) throws -> T) throws -> T {
         let operation = CKSynchronousOperation(context: stack.newBackgroundTask(), queue: queue, logger: logger)
 

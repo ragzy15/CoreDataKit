@@ -27,8 +27,7 @@ public struct UserStorage<Value> {
     public var wrappedValue: Value {
         get {
             UserDefaults.standard.value(forKey: key) as? Value ?? value
-        }
-        set {
+        } set {
             UserDefaults.standard.set(newValue, forKey: key)
             value = newValue
         }

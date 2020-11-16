@@ -18,5 +18,12 @@ public protocol CKStoreDescriptionMethods: class {
     
     func replaceStoreDescriptions(with descriptions: CKStoreDescription...)
     
-    func loadPersistentStores(block: ((CKStoreDescription, NSError) -> Void)?)
+    func loadPersistentStores(block: ((Result<CKStoreDescription, NSError>) -> Void)?)
+}
+
+public protocol CKCoreSpotlight: class {
+    
+    /// Create exporter by subclassing `CKCoreDataCoreSpotlightDelegate`, and call `setOption(exporter, forKey: NSCoreDataCoreSpotlightExporter)`
+    @available(iOS 11.0, *)
+    func setCoreDataCoreSpotlightExporter(for exporter: ([CKStoreDescription], CKObjectModel) -> Void)
 }

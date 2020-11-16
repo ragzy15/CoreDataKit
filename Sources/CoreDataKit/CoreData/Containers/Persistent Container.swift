@@ -15,6 +15,11 @@ final class CKPersistentContainer: CKContainer, CKContainerType {
     }
     
     func updateContexts() {
+        if #available(iOS 11.0, *) {
+            viewContext.transactionAuthor = "main_app"
+            viewContext.name = "view_context"
+        }
+        
         viewContext.automaticallyMergesChangesFromParent = true
     }
 }

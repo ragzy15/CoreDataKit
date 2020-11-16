@@ -39,11 +39,12 @@ public class /*abstract*/ CKBaseOperation {
     ///   - context: `CKContext` to perform operations with.
     ///   - queue: `DispatchQueue` on which this task will work.
     ///   - logger: `CKLogger` to check conditions and log errors and success.
-    init(context moc: CKContext, queue q: DispatchQueue, logger l: CKLogger) {
+    public init(context moc: CKContext, queue q: DispatchQueue, logger l: CKLogger) {
         context = moc
         queue = q
         logger = l
         isCommitted = false
+        context.automaticallyMergesChangesFromParent = true
     }
 }
 
@@ -220,8 +221,8 @@ extension CKBaseOperation: FetchClause {
 private extension CKBaseOperation {
     
     func precondition(_ message: String, file: StaticString = #file, line: UInt = #line, function: StaticString = #function) {
-        dispatchPrecondition(condition: .onQueue(queue))
+//        dispatchPrecondition(condition: .onQueue(queue))
         
-        logger.assert(!isCommitted, message + committedCondition, file: file, line: line, function: function)
+//        logger.assert(!isCommitted, message + committedCondition, file: file, line: line, function: function)
     }
 }

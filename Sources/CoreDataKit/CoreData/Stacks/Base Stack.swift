@@ -6,7 +6,7 @@
 //  Copyright © 2019 Raghav Ahuja. All rights reserved.
 //
 
-import Foundation
+import CoreData
 
 class CKBaseStack<Container: CKContainer & CKContainerType>: CKStack {
     
@@ -16,8 +16,38 @@ class CKBaseStack<Container: CKContainer & CKContainerType>: CKStack {
     
     let persistentContainer: Container
     
+    private lazy var parentBagroundContext: CKContext = {
+        let context = newBackgroundTask()
+        context.automaticallyMergesChangesFromParent = true
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        return context
+    }()
+    
     init(modelName name: String) {
         persistentContainer = Container(with: name)
+        
+        persistentContainer.persistentStoreDescriptions.forEach { (storeDescription) in
+            if #available(iOS 13.0, *) {
+                storeDescription.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+            }
+            
+            if #available(iOS 11.0, *) {
+                storeDescription.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+            }
+        }
+    }
+    
+    func getPersistentContainer() -> _Container {
+        persistentContainer
+    }
+}
+
+// MARK: CORE SPOTLIGHT
+extension CKBaseStack: CKCoreSpotlight {
+    
+    @available(iOS 11.0, *)
+    func setCoreDataCoreSpotlightExporter(for exporter: ([CKStoreDescription], CKObjectModel) -> Void) {
+        exporter(persistentContainer.persistentStoreDescriptions, persistentContainer.managedObjectModel)
     }
 }
 
@@ -45,8 +75,7 @@ extension CKBaseStack: CKStoreDescriptionMethods {
     }
     
     @inline(__always)
-    func loadPersistentStores(block: ((CKStoreDescription, NSError) -> Void)?) {
-        
+    func loadPersistentStores(block: ((Result<CKStoreDescription, NSError>) -> Void)?) {
         persistentContainer.persistentStoreCoordinator.performAndWait {
             
             persistentContainer.loadPersistentStores { [weak self] (storeDescription, error) in
@@ -54,10 +83,7 @@ extension CKBaseStack: CKStoreDescriptionMethods {
                 if let error = error as NSError? {
                     CoreDataKit.default.logger.log(error: error)
                     
-                    if let block = block {
-                        block(storeDescription, error)
-                        return
-                    }
+                    block?(.failure(error))
                     
                     // Replace this implementation with code to handle the error appropriately.
                     // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
@@ -73,6 +99,7 @@ extension CKBaseStack: CKStoreDescriptionMethods {
                     CoreDataKit.default.logger.fatalError("Unresolved error \(error), \(error.userInfo)")
                 } else {
                     self?.persistentContainer.updateContexts()
+                    block?(.success(storeDescription))
                 }
             }
         }
@@ -94,6 +121,24 @@ extension CKBaseStack {
     /// - Returns: A newly created private managed object context.
     func newBackgroundTask() -> CKContext {
         let context = persistentContainer.newBackgroundContext()
+        return context
+    }
+    
+    /// Creates a main managed object context.
+    /// - Returns: A newly created private managed object context.
+    func newMainThreadChildTask() -> CKContext {
+        let context = CKContext(concurrencyType: .mainQueueConcurrencyType)
+        context.parent = parentBagroundContext
+        context.automaticallyMergesChangesFromParent = true
+        return context
+    }
+    
+    /// Creates a private managed object context.
+    /// - Returns: A newly created private managed object context.
+    func newBackgroundThreadChildTask() -> CKContext {
+        let context = CKContext(concurrencyType: .privateQueueConcurrencyType)
+        context.parent = parentBagroundContext
+        context.automaticallyMergesChangesFromParent = true
         return context
     }
 }
