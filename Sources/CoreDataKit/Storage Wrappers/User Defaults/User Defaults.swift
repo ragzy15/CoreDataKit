@@ -8,58 +8,90 @@
 
 import Foundation
 
-open class UserDefaults: Foundation.UserDefaults {
+open class CKUserDefaults: Foundation.UserDefaults {
     
-    private static let `default` = UserDefaults()
+    private static let `default` = CKUserDefaults()
     
-    open override class var standard: UserDefaults {
+    open override class var standard: CKUserDefaults {
         .default
     }
     
-    private static let defaultAppGroup = UserDefaults(suiteName: "CK-App")!
+    private static let defaultAppGroup = CKUserDefaults(suiteName: "CK-App")!
     
-    open class var standardAppGroup: UserDefaults {
+    open class var standardAppGroup: CKUserDefaults {
         .defaultAppGroup
     }
     
     open func set<Key: StorageKeys>(_ value: Any?, for key: Key) {
-        UserDefaults.standard.set(value, forKey: key.key)
+        set(value, forKey: key.key)
     }
     
-    class func set<Keys: StorageKeys>(_ keyedValues: [Keys : Any]) {
+    open func set<Key: StorageKeys>(_ value: Int, for key: Key) {
+        set(value, forKey: key.key)
+    }
+    
+    open func set<Key: StorageKeys>(_ value: Float, for key: Key) {
+        set(value, forKey: key.key)
+    }
+    
+    open func set<Key: StorageKeys>(_ value: Double, for key: Key) {
+        set(value, forKey: key.key)
+    }
+    
+    open func set<Key: StorageKeys>(_ value: Bool, for key: Key) {
+        set(value, forKey: key.key)
+    }
+    
+    open func set<Key: StorageKeys>(_ url: URL?, for key: Key) {
+        set(url, forKey: key.key)
+    }
+    
+    open func set<Key: StorageKeys>(_ uuid: UUID, for key: Key) {
+        set(uuid.uuidString, for: key)
+    }
+    
+    open func set<Keys: StorageKeys>(_ keyedValues: [Keys : Any]) {
         let values = Dictionary(uniqueKeysWithValues: keyedValues.map { ($0.key, $1) })
-        UserDefaults.standard.setValuesForKeys(values)
+        setValuesForKeys(values)
     }
     
     open func delete<Key: StorageKeys>(for key: Key) {
-        UserDefaults.standard.removeObject(forKey: key.key)
+        removeObject(forKey: key.key)
     }
     
     open func value<Key: StorageKeys>(for key: Key) -> Any? {
-        return UserDefaults.standard.value(forKey: key.key)
+        value(forKey: key.key)
     }
     
     open func stringValue<Key: StorageKeys>(for key: Key) -> String? {
-        return UserDefaults.standard.string(forKey: key.key)
+        string(forKey: key.key)
     }
     
     open func intValue<Key: StorageKeys>(for key: Key) -> Int {
-        return UserDefaults.standard.integer(forKey: key.key)
+        integer(forKey: key.key)
     }
     
     open func floatValue<Key: StorageKeys>(for key: Key) -> Float {
-        return UserDefaults.standard.float(forKey: key.key)
+        float(forKey: key.key)
     }
     
     open func doubleValue<Key: StorageKeys>(for key: Key) -> Double {
-        return UserDefaults.standard.double(forKey: key.key)
+        double(forKey: key.key)
     }
     
     open func boolValue<Key: StorageKeys>(for key: Key) -> Bool {
-        return UserDefaults.standard.bool(forKey: key.key)
+        bool(forKey: key.key)
     }
     
     open func data<Key: StorageKeys>(for key: Key) -> Data? {
-        return UserDefaults.standard.data(forKey: key.key)
+        data(forKey: key.key)
+    }
+    
+    open func uuid<Key: StorageKeys>(for key: Key) -> UUID? {
+        guard let uuidString = stringValue(for: key) else {
+            return nil
+        }
+        
+        return UUID(uuidString: uuidString)
     }
 }

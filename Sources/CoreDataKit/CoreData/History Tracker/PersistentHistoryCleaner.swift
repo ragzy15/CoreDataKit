@@ -12,7 +12,7 @@ struct PersistentHistoryCleaner {
 
     let context: NSManagedObjectContext
     let targets: [CKAppTarget]
-    let userDefaults: UserDefaults
+    let userDefaults: CKUserDefaults
 
     /// Cleans up the persistent history by deleting the transactions that have been merged into each target.
     func clean() throws {

@@ -14,7 +14,7 @@ struct PersistentHistoryMerger {
     let backgroundContext: NSManagedObjectContext
     let viewContext: NSManagedObjectContext
     let currentTarget: CKAppTarget
-    let userDefaults: UserDefaults
+    let userDefaults: CKUserDefaults
 //    let logger: OSLog
 
     func merge() throws {

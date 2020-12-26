@@ -26,14 +26,14 @@ public struct UserStorage<Value> {
     
     public var wrappedValue: Value {
         get {
-            UserDefaults.standard.value(forKey: key) as? Value ?? value
+            CKUserDefaults.standard.value(forKey: key) as? Value ?? value
         } set {
-            UserDefaults.standard.set(newValue, forKey: key)
+            CKUserDefaults.standard.set(newValue, forKey: key)
             value = newValue
         }
     }
     
     public func delete() {
-        UserDefaults.standard.removeObject(forKey: key)
+        CKUserDefaults.standard.removeObject(forKey: key)
     }
 }

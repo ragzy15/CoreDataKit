@@ -26,12 +26,12 @@ public struct CodableUserStorage<Value: Codable> {
     
     public var wrappedValue: Value {
         get {
-            let data = UserDefaults.standard.value(forKey: key) as? Data
+            let data = CKUserDefaults.standard.value(forKey: key) as? Data
             return decode(data) ?? value
         }
         set {
             let data = encode(newValue)
-            UserDefaults.standard.set(data, forKey: key)
+            CKUserDefaults.standard.set(data, forKey: key)
             value = newValue
         }
     }
@@ -61,6 +61,6 @@ public struct CodableUserStorage<Value: Codable> {
     }
     
     public func delete() {
-        UserDefaults.standard.removeObject(forKey: key)
+        CKUserDefaults.standard.removeObject(forKey: key)
     }
 }

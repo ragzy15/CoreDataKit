@@ -81,7 +81,7 @@ extension CKBaseStack: CKStoreDescriptionMethods {
             persistentContainer.loadPersistentStores { [weak self] (storeDescription, error) in
                 
                 if let error = error as NSError? {
-                    CoreDataKit.default.logger.log(error: error)
+                    CKManager.default.logger.log(error: error)
                     
                     block?(.failure(error))
                     
@@ -96,7 +96,7 @@ extension CKBaseStack: CKStoreDescriptionMethods {
                      * The store could not be migrated to the current model version.
                      Check the error message to determine what the actual problem was.
                      */
-                    CoreDataKit.default.logger.fatalError("Unresolved error \(error), \(error.userInfo)")
+                    CKManager.default.logger.fatalError("Unresolved error \(error), \(error.userInfo)")
                 } else {
                     self?.persistentContainer.updateContexts()
                     block?(.success(storeDescription))

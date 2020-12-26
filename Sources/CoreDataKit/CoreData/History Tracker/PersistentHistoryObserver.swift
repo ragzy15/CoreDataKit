@@ -17,11 +17,11 @@ public enum CKAppTarget: String, CaseIterable {
 public final class CKPersistentHistoryObserver {
     
     public static let defaultApp = CKPersistentHistoryObserver(target: .app,
-                                                               persistentContainer: CoreDataKit.default.getStack().getPersistentContainer(),
-                                                               userDefaults: UserDefaults.standardAppGroup)
+                                                               persistentContainer: CKManager.default.getStack().getPersistentContainer(),
+                                                               userDefaults: CKUserDefaults.standardAppGroup)
 
     private let target: CKAppTarget
-    private let userDefaults: UserDefaults
+    private let userDefaults: CKUserDefaults
     private let persistentContainer: NSPersistentContainer
 
     /// An operation queue for processing history transactions.
@@ -32,7 +32,7 @@ public final class CKPersistentHistoryObserver {
         return queue
     }()
 
-    public init(target: CKAppTarget, persistentContainer: NSPersistentContainer, userDefaults: UserDefaults) {
+    public init(target: CKAppTarget, persistentContainer: NSPersistentContainer, userDefaults: CKUserDefaults) {
         self.target = target
         self.userDefaults = userDefaults
         self.persistentContainer = persistentContainer
@@ -80,7 +80,7 @@ public final class CKPersistentHistoryObserver {
 }
 
 @available(iOS 13.0, *)
-extension UserDefaults {
+extension CKUserDefaults {
 
     func lastHistoryTransactionTimestamp(for target: CKAppTarget) -> Date? {
         let key = "lastHistoryTransactionTimeStamp-\(target.rawValue)"

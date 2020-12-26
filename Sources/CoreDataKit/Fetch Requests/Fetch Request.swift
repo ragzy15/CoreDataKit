@@ -50,10 +50,10 @@ public struct CKFetchRequest<Result: CKFetchResult> {
         self.fetchRequest = fetchRequest
     }
     
-    public mutating func update() {
-        let objects = try? CoreDataKit.default.unsafeContext.fetch(fetchRequest)
-        results = .init(results: objects ?? [])
-    }
+//    public mutating func update() {
+//        let objects = try? CoreDataKit.default.unsafeContext.fetch(fetchRequest)
+//        results = .init(results: objects ?? [])
+//    }
 }
 
 extension CKFetchRequest where Result: CKObject {

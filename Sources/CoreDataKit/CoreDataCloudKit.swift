@@ -9,13 +9,13 @@
 import Foundation
 
 @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-public final class CoreDataCloudKit: CoreDataKit {
+public final class CKCloudManager: CKManager {
     
     /// The default instance with database name being application's name.
-    private static let `internalDefault` = CoreDataCloudKit()
+    private static let `internalDefault` = CKCloudManager()
     
     /// The default instance with database name being application's name.
-    public override class var `default`: CoreDataCloudKit {
+    public override class var `default`: CKCloudManager {
         internalDefault
     }
     

@@ -441,9 +441,9 @@ extension CKContext {
     }
     
     
-    func saveContextSync() -> Result<Bool, NSError> {
+    func saveContextSync() -> Result<Void, NSError> {
         
-        var result: Result<Bool, NSError> = .success(false)
+        var result: Result<Void, NSError> = .success(())
         
         guard hasChanges else {
             return result
@@ -456,7 +456,7 @@ extension CKContext {
                 if let parent = self.parent {
                     result = parent.saveContextSync()
                 } else {
-                    result = .success(true)
+                    result = .success(())
                 }
             } catch {
                 result = .failure(error as NSError)
