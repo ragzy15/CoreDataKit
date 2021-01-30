@@ -77,6 +77,10 @@ extension CKManager: CKCoreSpotlight {
     public func setCoreDataCoreSpotlightExporter(for exporter: ([CKStoreDescription], CKObjectModel) -> Void) {
         stack.setCoreDataCoreSpotlightExporter(for: exporter)
     }
+    
+    public func objectId(forURIRepresentation url: URL) -> CKObjectId? {
+        stack.getPersistentContainer().persistentStoreCoordinator.managedObjectID(forURIRepresentation: url)
+    }
 }
 
 // MARK: STORE DESCRIPTIONS
@@ -173,7 +177,7 @@ public extension CKManager {
 
                 switch result {
                 case .success:
-                    completion(.success(output))
+                    DispatchQueue.main.async { completion(.success(output)) }
                     
                 case .failure(let error):
                     DispatchQueue.main.async { completion(.failure(error)) }

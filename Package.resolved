@@ -5,9 +5,9 @@
         "package": "PublisherKit",
         "repositoryURL": "https://github.com/ragzy15/PublisherKit",
         "state": {
-          "branch": null,
-          "revision": "0abfe5f5d7c5be13f933fcfe2372e8c9ab3ddf90",
-          "version": "4.0.2"
+          "branch": "networker",
+          "revision": "337b59437bd663784bafaf2b1dee5d6374e7ded7",
+          "version": null
         }
       }
     ]

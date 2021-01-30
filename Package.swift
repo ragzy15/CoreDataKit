@@ -19,7 +19,7 @@ let package = Package(
             targets: ["CoreDataKit", "FRC"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/ragzy15/PublisherKit", from: .init(4, 0, 2))
+        .package(url: "https://github.com/ragzy15/PublisherKit", .branch("networker"))
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
     ],

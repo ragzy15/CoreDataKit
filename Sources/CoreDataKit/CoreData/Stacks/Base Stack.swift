@@ -27,11 +27,11 @@ class CKBaseStack<Container: CKContainer & CKContainerType>: CKStack {
         persistentContainer = Container(with: name)
         
         persistentContainer.persistentStoreDescriptions.forEach { (storeDescription) in
-            if #available(iOS 13.0, *) {
+            if #available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *) {
                 storeDescription.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
             }
             
-            if #available(iOS 11.0, *) {
+            if #available(iOS 11.0, macOS 10.13, tvOS 11.0, *) {
                 storeDescription.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
             }
         }

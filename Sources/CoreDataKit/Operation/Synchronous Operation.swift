@@ -16,4 +16,11 @@ public class CKSynchronousOperation: CKBaseOperation {
         let result = context.saveContextSync()
         return result
     }
+    
+    public func newChildOperation() -> CKSynchronousOperation {
+        let childContext = CKContext(concurrencyType: .mainQueueConcurrencyType)
+        childContext.parent = unsafeContext
+        childContext.automaticallyMergesChangesFromParent = true
+        return CKSynchronousOperation(context: childContext, queue: queue, logger: logger)
+    }
 }

@@ -332,6 +332,8 @@ extension Keychain {
         /// The data in the keychain item can always be accessed regardless of whether the device is locked.
         ///
         /// This is not recommended for application use. Items with this attribute do not migrate to a new device. Thus, after restoring from a backup of a different device, these items will not be present.
+        @available(iOS, introduced: 4.0, deprecated: 12.0, message: "Use an accessibility level that provides some user protection, such as afterFirstUnlockThisDeviceOnly")
+        @available(macCatalyst, introduced: 13.0, deprecated: 13.0, message: "Use an accessibility level that provides some user protection, such as afterFirstUnlockThisDeviceOnly")
         public static let alwaysThisDeviceOnly = Accessibility(rawValue: kSecAttrAccessibleAlwaysThisDeviceOnly)
 
 

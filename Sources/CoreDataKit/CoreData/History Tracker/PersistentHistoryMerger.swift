@@ -8,7 +8,7 @@
 import os.log
 import CoreData
 
-@available(iOS 13.0, *)
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
 struct PersistentHistoryMerger {
 
     let backgroundContext: NSManagedObjectContext
@@ -44,7 +44,7 @@ struct PersistentHistoryMerger {
     }
 }
 
-@available(iOS 11.0, *)
+@available(iOS 11.0, macOS 10.13, tvOS 11.0, *)
 extension Collection where Element == NSPersistentHistoryTransaction {
 
     /// Merges the current collection of history transactions into the given managed object context.

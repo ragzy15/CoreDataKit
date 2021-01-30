@@ -173,7 +173,7 @@ extension CKContext: FetchClause {
     }
     
     public func fetchFirst<Object>(_ request: CKFetch<Object>) throws -> Object? where Object : CKObject {
-        
+        request.fetchRequest.fetchLimit = 1
         let objects = try fetch(request)
         return objects.first
     }

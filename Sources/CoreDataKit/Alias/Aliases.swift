@@ -73,6 +73,7 @@ public typealias CKBatchInsertResult = NSBatchInsertResult
 
 
 public typealias NSPredicate = CoreData.NSPredicate
+public typealias CompoundPredicate = CoreData.NSCompoundPredicate
 
 public typealias CKFetchedResultsController<ResultType: CKFetchResult> = NSFetchedResultsController<ResultType>
 
@@ -92,6 +93,7 @@ public typealias CKSortDescriptor = NSSortDescriptor
 
 public typealias CKEntityDescription = NSEntityDescription
 
-
-@available(iOS 11.0, *)
+#if os(iOS) || os(macOS)
+@available(iOS 11.0, macOS 10.13, *)
 public typealias CKCoreDataCoreSpotlightDelegate = NSCoreDataCoreSpotlightDelegate
+#endif

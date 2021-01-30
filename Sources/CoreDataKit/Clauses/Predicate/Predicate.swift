@@ -188,19 +188,19 @@ extension CKPredicate {
     
     /// Combines two `CKPredicate` predicates together using `AND` operator
     public static func && (left: CKPredicate<T>, right: CKPredicate<T>) -> CKPredicate<T> {
-        CKPredicate<T>(NSCompoundPredicate(type: .and, subpredicates: [left.predicate, right.predicate]))
+        CKPredicate<T>(CompoundPredicate(type: .and, subpredicates: [left.predicate, right.predicate]))
     }
     
     
     /// Combines two `CKPredicate` predicates together using `OR` operator
     public static func || (left: CKPredicate<T>, right: CKPredicate<T>) -> CKPredicate<T> {
-        CKPredicate<T>(NSCompoundPredicate(type: .or, subpredicates: [left.predicate, right.predicate]))
+        CKPredicate<T>(CompoundPredicate(type: .or, subpredicates: [left.predicate, right.predicate]))
     }
     
     
     /// Inverts the predicate of a `CKPredicate` clause using `NOT` operator
     public static prefix func ! (clause: CKPredicate<T>) -> CKPredicate<T> {
-        CKPredicate<T>(NSCompoundPredicate(type: .not, subpredicates: [clause.predicate]))
+        CKPredicate<T>(CompoundPredicate(type: .not, subpredicates: [clause.predicate]))
     }
     
     
