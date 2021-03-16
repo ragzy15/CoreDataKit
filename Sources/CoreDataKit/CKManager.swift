@@ -1,5 +1,5 @@
 //
-//  CoreDataKit.swift
+//  CKManager.swift
 //  CoreDataKit
 //
 //  Created by Raghav Ahuja on 18/10/19.
@@ -8,12 +8,12 @@
 
 import Foundation
 
-public class CoreDataKit {
+public class CKManager {
     
     /// The default instance with database name being application's name.
-    private static let `internalDefault` = CoreDataKit()
+    private static let `internalDefault` = CKManager()
     
-    public class var `default`: CoreDataKit {
+    public class var `default`: CKManager {
         internalDefault
     }
     
@@ -54,7 +54,7 @@ public class CoreDataKit {
 }
 
 // MARK: STORE DESCRIPTIONS
-extension CoreDataKit: CKStoreDescriptionMethods {
+extension CKManager: CKStoreDescriptionMethods {
     
     public func addStoreDescriptions(_ descriptions: [CKStoreDescription]) {
         stack.addStoreDescriptions(descriptions)
@@ -78,7 +78,7 @@ extension CoreDataKit: CKStoreDescriptionMethods {
 }
 
 // MARK: DATABASE OPERATIONS
-public extension CoreDataKit {
+public extension CKManager {
     
     func perform<T>(synchronous workItem: (CKSynchronousOperation) throws -> T) throws -> T {
         let operation = CKSynchronousOperation(context: stack.newBackgroundTask(), queue: queue, logger: logger)
@@ -139,7 +139,7 @@ public extension CoreDataKit {
 }
 
 // MARK: FETCH CLAUSE
-extension CoreDataKit: FetchClause {
+extension CKManager: FetchClause {
     
     public func fetch<Object>(_ request: CKFetch<Object>) throws -> [Object] where Object : CKObject {
         precondition()
@@ -193,7 +193,7 @@ extension CoreDataKit: FetchClause {
 }
 
 // MARK: LOGGING
-private extension CoreDataKit {
+private extension CKManager {
     
     func precondition(file: StaticString = #file, line: UInt = #line, function: StaticString = #function) {
 //        dispatchPrecondition(condition: DispatchPredicate.onQueue(.main))
@@ -208,7 +208,7 @@ private extension CoreDataKit {
 }
 
 // MARK: ASYNCHRONOUS FETCH CLAUSE
-extension CoreDataKit: AsynchronousFetchClause {
+extension CKManager: AsynchronousFetchClause {
     
     public func fetch<Object>(_ request: CKFetch<Object>, completion: @escaping (Result<[Object], NSError>) -> Void) where Object : CKObject {
         precondition()

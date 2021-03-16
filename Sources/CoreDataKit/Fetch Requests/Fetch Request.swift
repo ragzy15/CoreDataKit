@@ -51,7 +51,7 @@ public struct CKFetchRequest<Result: CKFetchResult> {
     }
     
     public mutating func update() {
-        let objects = try? CoreDataKit.default.unsafeContext.fetch(fetchRequest)
+        let objects = try? CKManager.default.unsafeContext.fetch(fetchRequest)
         results = .init(results: objects ?? [])
     }
 }
@@ -131,7 +131,7 @@ extension CKFetchRequest {
             subscriber.receive(subscription: subscription)
             
             do {
-                let objects = try CoreDataKit.default.unsafeContext.fetch(fetchRequest)
+                let objects = try CKManager.default.unsafeContext.fetch(fetchRequest)
                 
                 _  = subscription.receive(.init(results: objects))
                 subscription.receive(completion: .finished)

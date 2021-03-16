@@ -13,28 +13,35 @@ public struct UserStorage<Value> {
     
     private let key: String
     private var value: Value
+    private let store: CKUserDefaults?
     
-    public init<Key: StorageKeys>(key k: Key, initialValue v: Value) {
-        key = k.key
-        value = v
+    private var userDefaults: CKUserDefaults {
+        store ?? .standard
     }
     
-    public init(key k: String, initialValue v: Value) {
+    public init<Key: StorageKeys>(key k: Key, initialValue v: Value, store: CKUserDefaults? = nil) {
+        key = k.key
+        value = v
+        self.store = store
+    }
+    
+    public init(key k: String, initialValue v: Value, store: CKUserDefaults? = nil) {
         key = k
         value = v
+        self.store = store
     }
     
     public var wrappedValue: Value {
         get {
-            UserDefaults.standard.value(forKey: key) as? Value ?? value
+            userDefaults.value(forKey: key) as? Value ?? value
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: key)
+            userDefaults.set(newValue, forKey: key)
             value = newValue
         }
     }
     
     public func delete() {
-        UserDefaults.standard.removeObject(forKey: key)
+        userDefaults.removeObject(forKey: key)
     }
 }
