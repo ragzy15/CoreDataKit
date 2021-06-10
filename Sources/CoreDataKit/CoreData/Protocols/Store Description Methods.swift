@@ -25,10 +25,10 @@ public protocol CKCoreSpotlight: AnyObject {
     
 #if os(iOS) || os(macOS)
     @available(iOS 11.0, macOS 10.13, *)
-    typealias SpotlightIndexModelHandler = (CKStoreDescription?, CKObjectModel) -> CKCoreDataCoreSpotlightDelegate
+    typealias SpotlightIndexModelHandler = (CKStoreDescription?, CKObjectModel) -> CKCoreDataCoreSpotlightDelegate?
     
     @available(iOS 13.0, macOS 10.15, *)
-    typealias SpotlightIndexCoordinatorHandler = (CKStoreDescription?, CKCoordinator) -> CKCoreDataCoreSpotlightDelegate
+    typealias SpotlightIndexCoordinatorHandler = (CKStoreDescription?, CKCoordinator) -> CKCoreDataCoreSpotlightDelegate?
     
     @available(iOS 11.0, macOS 10.13, *)
     var spotlightIndexer: CKCoreDataCoreSpotlightDelegate? { get }
