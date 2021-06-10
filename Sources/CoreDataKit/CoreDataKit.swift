@@ -78,6 +78,11 @@ extension CKManager: CKCoreSpotlight {
         stack.setCoreDataCoreSpotlightExporter(for: exporter)
     }
     
+    @available(iOS 13.0, *)
+    public func setCoreDataCoreSpotlightExporter(for exporter: ([CKStoreDescription], CKCoordinator) -> Void) {
+        stack.setCoreDataCoreSpotlightExporter(for: exporter)
+    }
+    
     public func objectId(forURIRepresentation url: URL) -> CKObjectId? {
         stack.getPersistentContainer().persistentStoreCoordinator.managedObjectID(forURIRepresentation: url)
     }

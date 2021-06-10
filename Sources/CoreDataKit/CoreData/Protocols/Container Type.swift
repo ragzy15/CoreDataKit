@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol CKContainerType: class {
+protocol CKContainerType: AnyObject {
     init(with name: String)
     func updateContexts()
 }

@@ -49,6 +49,11 @@ extension CKBaseStack: CKCoreSpotlight {
     func setCoreDataCoreSpotlightExporter(for exporter: ([CKStoreDescription], CKObjectModel) -> Void) {
         exporter(persistentContainer.persistentStoreDescriptions, persistentContainer.managedObjectModel)
     }
+    
+    @available(iOS 13.0, *)
+    func setCoreDataCoreSpotlightExporter(for exporter: ([CKStoreDescription], CKCoordinator) -> Void) {
+        exporter(persistentContainer.persistentStoreDescriptions, persistentContainer.persistentStoreCoordinator)
+    }
 }
 
 // MARK: MIGRATION
