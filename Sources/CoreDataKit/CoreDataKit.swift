@@ -73,15 +73,22 @@ public class CKManager {
 // MARK: CORE SPOTLIGHT
 extension CKManager: CKCoreSpotlight {
     
-    @available(iOS 11.0, *)
-    public func setCoreDataCoreSpotlightExporter(for exporter: ([CKStoreDescription], CKObjectModel) -> Void) {
-        stack.setCoreDataCoreSpotlightExporter(for: exporter)
+#if os(iOS) || os(macOS)
+    @available(iOS 11.0, macOS 10.13, *)
+    public var spotlightIndexer: CKCoreDataCoreSpotlightDelegate? {
+        stack.spotlightIndexer
     }
     
-    @available(iOS 13.0, *)
-    public func setCoreDataCoreSpotlightExporter(for exporter: ([CKStoreDescription], CKCoordinator) -> Void) {
-        stack.setCoreDataCoreSpotlightExporter(for: exporter)
+    @available(iOS 11.0, macOS 10.13, *)
+    public func setCoreDataIndexer(for exporter: SpotlightIndexModelHandler) {
+        stack.setCoreDataIndexer(for: exporter)
     }
+    
+    @available(iOS 13.0, macOS 10.15, *)
+    public func setCoreDataIndexer(using exporter: SpotlightIndexCoordinatorHandler) {
+        stack.setCoreDataIndexer(using: exporter)
+    }
+#endif
     
     public func objectId(forURIRepresentation url: URL) -> CKObjectId? {
         stack.getPersistentContainer().persistentStoreCoordinator.managedObjectID(forURIRepresentation: url)

@@ -23,10 +23,21 @@ public protocol CKStoreDescriptionMethods: AnyObject {
 
 public protocol CKCoreSpotlight: AnyObject {
     
-    /// Create exporter by subclassing `CKCoreDataCoreSpotlightDelegate`, and call `setOption(exporter, forKey: NSCoreDataCoreSpotlightExporter)`
-    @available(iOS 11.0, *)
-    func setCoreDataCoreSpotlightExporter(for exporter: ([CKStoreDescription], CKObjectModel) -> Void)
+#if os(iOS) || os(macOS)
+    @available(iOS 11.0, macOS 10.13, *)
+    typealias SpotlightIndexModelHandler = (CKStoreDescription?, CKObjectModel) -> CKCoreDataCoreSpotlightDelegate
     
-    @available(iOS 13.0, *)
-    func setCoreDataCoreSpotlightExporter(for exporter: ([CKStoreDescription], CKCoordinator) -> Void)
+    @available(iOS 13.0, macOS 10.15, *)
+    typealias SpotlightIndexCoordinatorHandler = (CKStoreDescription?, CKCoordinator) -> CKCoreDataCoreSpotlightDelegate
+    
+    @available(iOS 11.0, macOS 10.13, *)
+    var spotlightIndexer: CKCoreDataCoreSpotlightDelegate? { get }
+    
+    /// Create exporter by subclassing `CKCoreDataCoreSpotlightDelegate`, and call `setOption(exporter, forKey: NSCoreDataCoreSpotlightExporter)`
+    @available(iOS 11.0, macOS 10.13, *)
+    func setCoreDataIndexer(for exporter: SpotlightIndexModelHandler)
+    
+    @available(iOS 13.0, macOS 10.15, *)
+    func setCoreDataIndexer(using exporter: SpotlightIndexCoordinatorHandler)
+#endif
 }

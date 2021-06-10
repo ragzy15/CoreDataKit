@@ -16,6 +16,15 @@ class CKBaseStack<Container: CKContainer & CKContainerType>: CKStack {
     
     let persistentContainer: Container
     
+    private var _spotlightIndexer: Any?
+    
+#if os(iOS) || os(macOS)
+    @available(iOS 11.0, macOS 10.13, *)
+    var spotlightIndexer: CKCoreDataCoreSpotlightDelegate? {
+        _spotlightIndexer as? CKCoreDataCoreSpotlightDelegate
+    }
+#endif
+    
     private lazy var parentBagroundContext: CKContext = {
         let context = newBackgroundTask()
         context.automaticallyMergesChangesFromParent = true
@@ -45,15 +54,17 @@ class CKBaseStack<Container: CKContainer & CKContainerType>: CKStack {
 // MARK: CORE SPOTLIGHT
 extension CKBaseStack: CKCoreSpotlight {
     
-    @available(iOS 11.0, *)
-    func setCoreDataCoreSpotlightExporter(for exporter: ([CKStoreDescription], CKObjectModel) -> Void) {
-        exporter(persistentContainer.persistentStoreDescriptions, persistentContainer.managedObjectModel)
+#if os(iOS) || os(macOS)
+    @available(iOS 11.0, macOS 10.13, *)
+    func setCoreDataIndexer(for exporter: SpotlightIndexModelHandler) {
+        _spotlightIndexer = exporter(persistentContainer.persistentStoreDescriptions.first, persistentContainer.managedObjectModel)
     }
     
-    @available(iOS 13.0, *)
-    func setCoreDataCoreSpotlightExporter(for exporter: ([CKStoreDescription], CKCoordinator) -> Void) {
-        exporter(persistentContainer.persistentStoreDescriptions, persistentContainer.persistentStoreCoordinator)
+    @available(iOS 13.0, macOS 10.15, *)
+    func setCoreDataIndexer(using exporter: SpotlightIndexCoordinatorHandler) {
+        _spotlightIndexer = exporter(persistentContainer.persistentStoreDescriptions.first, persistentContainer.persistentStoreCoordinator)
     }
+#endif
 }
 
 // MARK: MIGRATION
